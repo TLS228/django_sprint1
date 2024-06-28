@@ -1,21 +1,23 @@
 <article>
-    <ul>
-      <li>
-        Место: {{ post.location }}             
-      </li>
-      <li>
-        Дата: {{ post.date }}
-      </li>
-      <li>
-        Категория: <a href="{% url 'blog:category_posts' post.category %}">{{ post.category }}</a>
-      </li>
-    </ul> 
-    {% if truncating_text %}
-      <p>
-        {{ post.text|truncatewords:10 }}
-      </p>
-      <a href="{% url 'blog:post_detail' post.id %}">Читать полный текст</a>
-    {% else %}        
-      {{ post.text|linebreaks }}       
+  <ul>
+    <li>
+       Место: {{ post.location }}              
+    </li>
+    <li>
+       Дата: {{ post.date }}
+    </li>
+    <li>
+       Категория: <a href="{% url 'blog:category_posts' post.category %}">{{ post.category }}</a>
+    </li>
+  </ul>         
+  <p>
+    {% if full_text %}
+      {{ post.text|linebreaksbr }}
+    {% else %}
+      {{ post.text|truncatewords:10 }}
     {% endif %}
-  </article>
+  </p>
+  {% if short_text %}
+    <a href="{% url 'blog:post_detail' post.id %}">Читать полный текст</a>
+  {% endif %}
+</article>
