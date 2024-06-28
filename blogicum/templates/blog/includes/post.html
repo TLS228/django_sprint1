@@ -1,20 +1,20 @@
 <article>
   <ul>
     <li>
-       Место: {{ post.location }}              
+      Место: {{ post.location }}
     </li>
     <li>
-       Дата: {{ post.date }}
+      Дата: {{ post.date }}
     </li>
     <li>
-       Категория: <a href="{% url 'blog:category_posts' post.category %}">{{ post.category }}</a>
+      Категория: <a href="{% url 'blog:category_posts' post.category %}">{{ post.category }}</a>
     </li>
-  </ul>         
+  </ul>
   <p>
     {% if full_text %}
       {{ post.text|linebreaksbr }}
     {% else %}
-      {{ post.text|truncatewords:10 }}
+      {{ post.text|truncatewords:10|linebreaksbr }}
     {% endif %}
   </p>
   {% if short_text %}

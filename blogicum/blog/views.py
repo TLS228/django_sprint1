@@ -1,6 +1,5 @@
 from django.shortcuts import render  # type: ignore[import-untyped]
-from django.http import Http404  # type: ignore[import-untyped]
-from django.http import HttpResponse  # type: ignore[import-untyped]
+from django.http import Http404, HttpResponse  # type: ignore[import-untyped]
 
 # Временная заглушка для базы данных.
 posts: list[dict] = [
@@ -57,11 +56,12 @@ def index(request) -> HttpResponse:
 
 def post_detail(request, id) -> HttpResponse:
     """Отдельный пост."""
-    template: str = 'blog/detail.html'
-    context: dict = {'post': posts_dict.get(id)}
-    if not context['post']:
-        raise Http404('Страница не найдена')
-    return render(request, template, context)
+    post = posts_dict.get(id)
+    if not post:
+        raise Http404(f'Пост с ID {id} не найден')
+
+    context = {'post': post}
+    return render(request, 'blog/detail.html', context)
 
 
 def category_posts(request, category_slug) -> HttpResponse:
