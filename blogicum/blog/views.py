@@ -1,5 +1,5 @@
 from django.shortcuts import render  # type: ignore[import-untyped]
-from django.http import HttpResponseNotFound  # type: ignore[import-untyped]
+from django.http import Http404  # type: ignore[import-untyped]
 from django.http import HttpResponse  # type: ignore[import-untyped]
 
 # Временная заглушка для базы данных.
@@ -46,23 +46,21 @@ posts: list[dict] = [
     },
 ]
 
+posts_dict = {post['id']: post for post in posts}
+
 
 def index(request) -> HttpResponse:
     """Главная страница."""
     template: str = 'blog/index.html'
-    context: dict = {'posts': posts[::-1]}
-    return render(request, template, context)
+    return render(request, template, {'posts': posts[::-1]})
 
 
 def post_detail(request, id) -> HttpResponse:
     """Отдельный пост."""
     template: str = 'blog/detail.html'
-    context: dict = {}
-    for post in posts:
-        if post['id'] == id:
-            context = {'post': post}
-    if not context:
-        raise HttpResponseNotFound('Страница не найдена.')
+    context: dict = {'post': posts_dict.get(id)}
+    if not context['post']:
+        raise Http404('Страница не найдена')
     return render(request, template, context)
 
 
