@@ -59,7 +59,6 @@ def post_detail(request, id) -> HttpResponse:
     post = posts_dict.get(id)
     if not post:
         raise Http404(f'Пост с ID {id} не найден')
-
     context = {'post': post}
     return render(request, 'blog/detail.html', context)
 
